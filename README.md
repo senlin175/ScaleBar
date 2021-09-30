@@ -1,6 +1,6 @@
 # ScaleBar
 这是一个自定义的刻度条,顾名思义,就是展示、标记、选中刻度的进度条;你可以通过属性定制控件的颜色,文字的大小,滑块和背景的比值等.下面是我使用的两种场景
-![image](https://github.com/FishInWater-1999/GithubUseTest/blob/master/bac_3.jpg)
+![image](https://github.com/senlin175/ScaleBar/blob/main/resource/1.gif)
 ### 1. 属性
 | 属性名      | 使用场景                                              | 传参类型 |
 | -------------- | --------------------------------------------------------- | ---------- |
@@ -42,7 +42,7 @@
 
 ```
 #### 刻度数组可通过如下方式添加到项目
-![image](https://github.com/FishInWater-1999/GithubUseTest/blob/master/bac_3.jpg)
+![image](https://github.com/senlin175/ScaleBar/blob/main/resource/2.png)
 ### 3. set方法
 #### set方法基本与属性对应,重点看一下监听方法即可
 ```

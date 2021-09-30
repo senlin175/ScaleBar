@@ -17,7 +17,7 @@
 | slideProgress  | 选中刻度                                   | Int        |
 ### 2. 使用示例
 ```
-    <com.guhe.scalebar.ScaleBar
+        <com.guhe.scalebar.ScaleBar
         android:id="@+id/bar3"
         android:layout_width="300dp"
         android:layout_height="70dp"
@@ -25,12 +25,21 @@
         android:background="@color/colorAccent"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        app:highText="高"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bar2"
+        app:bar_proportion="1.5"
+        app:bgColor="@android:color/darker_gray"
+        app:highText="高"
+        app:hintTextSize="20sp"
+        app:isShowScale="true"
         app:lowText="低"
+        app:selectedColor="@android:color/holo_red_dark"
+        app:slideProgress="3"
+        app:slideTextSize="13sp"
+        app:sliderColor="@android:color/holo_orange_light"
         app:values="@array/sizes" />
+
 ```
 #### 刻度数组可通过如下方式添加到项目
 ![image](https://github.com/FishInWater-1999/GithubUseTest/blob/master/bac_3.jpg)

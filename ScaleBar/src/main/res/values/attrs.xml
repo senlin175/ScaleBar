@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScaleBar">
+
+        <attr name="bgColor" format="reference" />
+        <attr name="selectedColor" format="reference"/>
+        <attr name="sliderColor" format="reference" />
+        <attr name="bar_proportion" format="float" />
+        <attr name="lowText" format="string"/>
+        <attr name="highText" format="string"/>
+        <attr name="values" format="reference"/>
+        <attr name="slideTextSize" format="dimension"/>
+        <attr name="hintTextSize" format="dimension"/>
+
+    </declare-styleable>
+</resources>

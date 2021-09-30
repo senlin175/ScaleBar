@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sizes">
+        <item>1.0X</item>
+        <item>1.25X</item>
+        <item>1.5X</item>
+        <item>1.75X</item>
+        <item>2.0X</item>
+    </string-array>
+
+    <string-array name="selects">
+        <item>OFF</item>
+        <item>ON</item>
+    </string-array>
+</resources>

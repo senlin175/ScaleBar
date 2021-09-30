@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             setShowScale(true)
             setProportion(1.5f)
             setLowText("小")
-            SetProgress(1)
+            setSlideProgress(3)
             setHighText("大")
             setPadding(5,5,5,5)
 //            setScales(arrayOf("1"))
@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onSliding(position: Int, selectedScale: String?) {
-                    scaleBar2.SetProgress(position)
-                    scaleBar3.SetProgress(position)
-                    scaleBar4.SetProgress(position)
-                    scaleBar5.SetProgress(selectedScale)
-                    scaleBar6.SetProgress(selectedScale)
+                    scaleBar2.setSlideProgress(position)
+                    scaleBar3.setSlideProgress(position)
+                    scaleBar4.setSlideProgress(position)
+                    scaleBar5.setSlideProgress(selectedScale)
+                    scaleBar6.setSlideProgress(selectedScale)
 
 
                     Log.i("6688", "  $selectedScale")

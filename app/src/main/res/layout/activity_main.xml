@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lowText="低"
+        app:slideProgress="2"
         app:values="@array/sizes" />
 
     <com.guhe.scalebar.ScaleBar
@@ -42,11 +43,19 @@
         android:background="@color/colorAccent"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        app:highText="高"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bar2"
+        app:bar_proportion="1.5"
+        app:bgColor="@android:color/darker_gray"
+        app:highText="高"
+        app:hintTextSize="20sp"
+        app:isShowScale="true"
         app:lowText="低"
+        app:selectedColor="@android:color/holo_red_dark"
+        app:slideProgress="3"
+        app:slideTextSize="13sp"
+        app:sliderColor="@android:color/holo_orange_light"
         app:values="@array/sizes" />
 
     <com.guhe.scalebar.ScaleBar

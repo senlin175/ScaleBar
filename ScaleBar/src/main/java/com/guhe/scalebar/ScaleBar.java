@@ -14,6 +14,7 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -120,9 +121,11 @@ public class ScaleBar extends View {
         proportion = typedArray.getFloat(R.styleable.ScaleBar_bar_proportion, 1.2f);
         slideTextSize = typedArray.getDimensionPixelSize(R.styleable.ScaleBar_slideTextSize, -1);
         hintTextSize = typedArray.getDimensionPixelSize(R.styleable.ScaleBar_hintTextSize, -1);
+        isShowScale = typedArray.getBoolean(R.styleable.ScaleBar_isShowScale, true);
+        selectedPosition = typedArray.getInteger(R.styleable.ScaleBar_slideProgress, 0);
 
         //获取刻度值数组
-        final int values = typedArray.getResourceId(R.styleable.ScaleBar_values, 0);
+        final int values = typedArray.getResourceId(R.styleable.ScaleBar_scales, 0);
         if (values > 0) {
             scales = typedArray.getResources().getStringArray(values);
         }
@@ -149,7 +152,6 @@ public class ScaleBar extends View {
         }
 
         shift = 0;
-        selectedPosition = 0;
         //默认选中第一个刻度
         if (scales != null && scales.length > 0) {
             selectedText = scales[0];
@@ -209,14 +211,16 @@ public class ScaleBar extends View {
             baseLineY = point.y + Math.abs(textPaint.ascent() + textPaint.descent()) / 2;
         }
 
-        if (scales != null && scales.length > 0) {
-            if (scales.length < 2)
-                throw new IllegalArgumentException("The scale value array must be greater than or equal to 2");
-            spacing = Math.round((maxX - minx) / (float) (scales.length - 1));
-            shift = selectedPosition * spacing;
-            point.x = minx + shift;
-            selectedText = scales[selectedPosition];
+        if (scales != null && scales.length < 2) {
+            Log.e("ScaleBar", "IllegalArgumentException: The scale value array must be greater than or equal to 2");
+        }
 
+        if (scales != null && selectedPosition > scales.length - 1) {
+            Log.e("ScaleBar", "IllegalArgumentException: The selected position cannot exceed the range of the scale array");
+        }
+
+        if (scales != null && scales.length > 1) {
+            spacing = Math.round((maxX - minx) / (float) (scales.length - 1));
             if (slideTextSize == -1) {
                 String tmpText = "字";
                 for (String scale : scales) {
@@ -226,7 +230,14 @@ public class ScaleBar extends View {
                 }
                 slideTextSize = getTextSize(tmpText, slideRadius, 1.4f, 1.5f);
             }
+
+            if (selectedPosition >= 0 && selectedPosition <= scales.length - 1) {
+                shift = selectedPosition * spacing;
+                point.x = minx + shift;
+                selectedText = scales[selectedPosition];
+            }
         }
+
         if (slideTextSize != -1) {
             textPaint.setTextSize(slideTextSize);
             slideTextY = point.y + Math.abs(textPaint.ascent() + textPaint.descent()) / 2;
@@ -440,7 +451,7 @@ public class ScaleBar extends View {
         canvas.drawCircle(point.x, point.y, slideRadius, paint);
 
         //绘制按钮上的选中文字
-        if (selectedText != null && !selectedText.isEmpty() && isShowScale) {
+        if (selectedText != null && !selectedText.isEmpty() && isShowScale && slideTextY != 0) {
             textPaint.setColor(selectedColor);
             textPaint.setTextSize(slideTextSize);
             canvas.drawText(selectedText, point.x - textPaint.measureText(selectedText) / 2, slideTextY, textPaint);
@@ -459,28 +470,6 @@ public class ScaleBar extends View {
             textPaint.setColor(selectedColor);
             canvas.drawText(highText, maxX - textPaint.measureText(highText) + bgRadius * 0.3f, baseLineY, textPaint);
         }
-    }
-
-    /**
-     * 设置提示文字大小
-     *
-     * @param hintTextSize 单位sp
-     */
-    public void setHintTextSize(int hintTextSize) {
-        this.hintTextSize = Math.round(getTextSizePx(hintTextSize));
-        initPathAndSize();
-        postInvalidate();
-    }
-
-    /**
-     * 设置滑块文字大小
-     *
-     * @param slideTextSize 单位sp
-     */
-    public void setSlideTextSize(int slideTextSize) {
-        this.slideTextSize = Math.round(getTextSizePx(slideTextSize));
-        initPathAndSize();
-        postInvalidate();
     }
 
     /**
@@ -536,6 +525,28 @@ public class ScaleBar extends View {
     }
 
     /**
+     * 设置提示文字大小
+     *
+     * @param hintTextSize 单位sp
+     */
+    public void setHintTextSize(int hintTextSize) {
+        this.hintTextSize = Math.round(getTextSizePx(hintTextSize));
+        initPathAndSize();
+        postInvalidate();
+    }
+
+    /**
+     * 设置滑块文字大小
+     *
+     * @param slideTextSize 单位sp
+     */
+    public void setSlideTextSize(int slideTextSize) {
+        this.slideTextSize = Math.round(getTextSizePx(slideTextSize));
+        initPathAndSize();
+        postInvalidate();
+    }
+
+    /**
      * 是否展示滑块上的选中刻度  默认为展示
      *
      * @param showScale 默认为展示
@@ -562,11 +573,15 @@ public class ScaleBar extends View {
      * @param scales 刻度数组
      */
     public void setScales(String[] scales) {
+        if (scales == null) return;
+        if (scales.length < 2) {
+            Log.e("ScaleBar", "IllegalArgumentException: The scale value array must be greater than or equal to 2");
+            return;
+        }
         this.scales = scales;
         //默认选中第一个刻度
-        if (scales != null && scales.length > 0) {
-            selectedText = scales[0];
-        }
+        selectedText = scales[0];
+        selectedPosition = 0;
         postInvalidate();
     }
 
@@ -593,8 +608,7 @@ public class ScaleBar extends View {
      *
      * @param scale 刻度值
      */
-    public void SetProgress(String scale) {
-        if (scale == null) return;
+    public void setSlideProgress(String scale) {
         if (scales != null && scales.length > 0) {
             for (int i = 0; i < scales.length; i++) {
                 String tmpText = scales[i];
@@ -613,7 +627,12 @@ public class ScaleBar extends View {
      *
      * @param position 刻度值在刻度数组中的位置    0~scales.length-1
      */
-    public void SetProgress(int position) {
+    public void setSlideProgress(int position) {
+        if (scales == null || scales.length < 1) return;
+        if (selectedPosition > scales.length - 1) {
+            Log.e("ScaleBar", "IllegalArgumentException: The selected position cannot exceed the range of the scale array");
+            return;
+        }
         selectedPosition = position;
         initPathAndSize();
         postInvalidate();

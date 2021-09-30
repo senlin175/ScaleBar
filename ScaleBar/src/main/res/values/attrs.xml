@@ -8,9 +8,11 @@
         <attr name="bar_proportion" format="float" />
         <attr name="lowText" format="string"/>
         <attr name="highText" format="string"/>
-        <attr name="values" format="reference"/>
+        <attr name="scales" format="reference"/>
         <attr name="slideTextSize" format="dimension"/>
         <attr name="hintTextSize" format="dimension"/>
+        <attr name="isShowScale" format="boolean"/>
+        <attr name="slideProgress" format="integer"/>
 
     </declare-styleable>
 </resources>

@@ -164,7 +164,11 @@ public class ScaleBar extends View {
         this.width = w;
         this.height = h;
 
-        initAll();
+        if (width != 0 && height != 0) {
+            width -= 10;
+            height -= 10;
+            initAll();
+        }
     }
 
     private void initAll() {
@@ -190,14 +194,14 @@ public class ScaleBar extends View {
         if (width == 0 || height == 0) return;
 
         if (proportion > 1) {
-            slideRadius = (height - pdTop - pdBottom) / 2f - 10;
+            slideRadius = (height - pdTop - pdBottom) / 2f;
             bgRadius = slideRadius / proportion;
         } else {
             bgRadius = (height - pdTop - pdBottom) / 2f;
             slideRadius = bgRadius * proportion;
         }
 
-        minx = (int) (Math.max(slideRadius, bgRadius) + 10) + pdLeft;
+        minx = (int) (Math.max(slideRadius, bgRadius)) + pdLeft;
         maxX = width - minx - pdRight + pdLeft;
 
         point.x = minx;
@@ -423,6 +427,9 @@ public class ScaleBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.save();
+        canvas.translate(5,5);
+
         //抗锯齿
         canvas.setDrawFilter(paintFlagsDrawFilter);
 
@@ -447,7 +454,7 @@ public class ScaleBar extends View {
 
         //绘制按钮
         paint.setColor(slideColor);
-        paint.setShadowLayer(10, 0, 0, Color.GRAY);
+        paint.setShadowLayer(5, 0, 0, Color.GRAY);
         canvas.drawCircle(point.x, point.y, slideRadius, paint);
 
         //绘制按钮上的选中文字
@@ -456,6 +463,8 @@ public class ScaleBar extends View {
             textPaint.setTextSize(slideTextSize);
             canvas.drawText(selectedText, point.x - textPaint.measureText(selectedText) / 2, slideTextY, textPaint);
         }
+
+        canvas.restore();
     }
 
     private void drawText(Canvas canvas) {

@@ -10,7 +10,7 @@
 | bar_proportion | 滑块半径和背景高度的比值,大于1则滑块超出滑槽滑动(默认1.2) | float      |
 | lowText        | 左侧滑槽中的展示文字                            | String     |
 | highText       | 右侧展示文字,不设置则不展示                  | String     |
-| values         | 刻度数组|String数组类型的资源Id(不会用的见下方图片) | String[]   |
+| scales         | 刻度数组|String数组类型的资源Id(不会用的见下方图片) | String[]   |
 | slideTextSize  | 滑块上的文字大小,不设置会自动计算(取值氛围12px~112px) | Int        |
 | hintTextSize   | 滑槽中的文字大小,不设置会自动计算         | Int        |
 | isShowScale    | 滑块上是否展示选中的刻度文字                | Boolean    |
@@ -38,7 +38,7 @@
         app:slideProgress="3"
         app:slideTextSize="13sp"
         app:sliderColor="@android:color/holo_orange_light"
-        app:values="@array/sizes" />
+        app:scales="@array/sizes" />
 
 ```
 #### 刻度数组可通过如下方式添加到项目

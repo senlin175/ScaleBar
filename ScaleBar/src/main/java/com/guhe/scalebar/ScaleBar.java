@@ -21,13 +21,14 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class ScaleBar extends View {
     private int width;
     private int height;
     private Paint paint;
     //滑块直径和背景高度的比值
-    private float proportion = 1.2f;
+    private float proportion = 1.0f;
     //最底层的背景色        lowText的默认字体颜色
     private int bgColor;
     //选中区域的背景色      highText的默认字体颜色
@@ -59,6 +60,7 @@ public class ScaleBar extends View {
     private float baseLineY;
     //刻度值数组
     private String[] scales;
+    private final String[] DEFAULT_SCALES = new String[]{"OFF", "ON"};
     //选中的刻度值
     private String selectedText;
     //选中的刻度值在刻度数组中的位置
@@ -92,6 +94,7 @@ public class ScaleBar extends View {
     private int pdLeft;
     private int pdRight;
     private int[] sizes;
+    private boolean isDownToMove = false;
 
     public ScaleBar(Context context) {
         this(context, null);
@@ -109,25 +112,32 @@ public class ScaleBar extends View {
     private void initValue(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScaleBar);
         bgColor = typedArray.getResourceId(R.styleable.ScaleBar_bgColor, -1);
-        bgColor = bgColor == -1 ? Color.parseColor("#F5F2F3") : typedArray.getResources().getColor(bgColor);
+        bgColor = bgColor == -1 ? Color.parseColor("#ffF5F2F3") : ContextCompat.getColor(getContext(), bgColor);
         slideColor = typedArray.getResourceId(R.styleable.ScaleBar_sliderColor, -1);
-        slideColor = slideColor == -1 ? Color.WHITE : typedArray.getResources().getColor(slideColor);
+        slideColor = slideColor == -1 ? Color.WHITE : ContextCompat.getColor(getContext(), slideColor);
         selectedColor = typedArray.getResourceId(R.styleable.ScaleBar_selectedColor, -1);
-        selectedColor = selectedColor == -1 ? Color.parseColor("#191202") : typedArray.getResources().getColor(selectedColor);
+        selectedColor = selectedColor == -1 ? Color.parseColor("#ff99cc00") : ContextCompat.getColor(getContext(), selectedColor);
         String scaleLow = typedArray.getString(R.styleable.ScaleBar_lowText);
         String scaleHigh = typedArray.getString(R.styleable.ScaleBar_highText);
         lowText = scaleLow == null ? "" : scaleLow;
         highText = scaleHigh == null ? "" : scaleHigh;
-        proportion = typedArray.getFloat(R.styleable.ScaleBar_bar_proportion, 1.2f);
+        proportion = typedArray.getFloat(R.styleable.ScaleBar_bar_proportion, 1.0f);
         slideTextSize = typedArray.getDimensionPixelSize(R.styleable.ScaleBar_slideTextSize, -1);
         hintTextSize = typedArray.getDimensionPixelSize(R.styleable.ScaleBar_hintTextSize, -1);
         isShowScale = typedArray.getBoolean(R.styleable.ScaleBar_isShowScale, true);
         selectedPosition = typedArray.getInteger(R.styleable.ScaleBar_slideProgress, 0);
+        isDownToMove = typedArray.getBoolean(R.styleable.ScaleBar_isDownToMove, false);
 
         //获取刻度值数组
         final int values = typedArray.getResourceId(R.styleable.ScaleBar_scales, 0);
         if (values > 0) {
             scales = typedArray.getResources().getStringArray(values);
+        } else {
+            scales = DEFAULT_SCALES;
+        }
+        if (scales.length == 2) {
+            isDownToMove = true;
+            isShowScale = false;
         }
 
         typedArray.recycle();
@@ -278,7 +288,7 @@ public class ScaleBar extends View {
         selectedPath.close();
     }
 
-    public boolean isArea(float x, float y) {
+    private boolean isArea(float x, float y) {
         slideRectF.setEmpty();
         slidePath.reset();
         slidePath.addCircle(point.x, point.y, slideRadius, Path.Direction.CCW);
@@ -347,11 +357,22 @@ public class ScaleBar extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startX = event.getX();
                 downX = event.getX();
                 downY = event.getY();
-                isSlide = isArea(startX, downY);
-                if (isSlide && onScaleSlideListener != null) {
+
+                if (isDownToMove) {
+                    if (onScaleSlideListener != null) {
+                        onScaleSlideListener.onBeforeSliding(selectedPosition, selectedText);
+                    }
+                    startX = point.x;
+                    moveToChangeView(downX);
+                    isSlide = true;
+                } else {
+                    startX = event.getX();
+                    isSlide = isArea(startX, downY);
+                }
+
+                if (!isDownToMove && isSlide && onScaleSlideListener != null) {
                     onScaleSlideListener.onBeforeSliding(selectedPosition, selectedText);
                 }
                 return true;
@@ -359,34 +380,7 @@ public class ScaleBar extends View {
                 if (!isSlide) return super.onTouchEvent(event);
                 float endX = event.getX();
 
-                float distance = endX - startX;
-                point.x += distance;
-                if (point.x < minx) {
-                    point.x = minx;
-                    shift = 0;
-                } else if (point.x > maxX) {
-                    point.x = maxX;
-                    shift = maxX - minx;
-                } else {
-                    shift += distance;
-                }
-                initPath();
-
-                if (scales != null && scales.length > 0) {
-                    int position = Math.round(shift / (float) spacing);
-                    String text = scales[position];
-                    if (!text.equals(selectedText)) {
-                        selectedPosition = position;
-                        selectedText = text;
-                        if (onScaleSlideListener != null) {
-                            onScaleSlideListener.onSliding(selectedPosition, selectedText);
-                        }
-                    }
-                }
-                startX = endX;
-
-                postInvalidate();
-                getParent().requestDisallowInterceptTouchEvent(true);
+                moveToChangeView(endX);
                 return true;
             case MotionEvent.ACTION_UP:
                 if (isSlide) endSlide();
@@ -403,6 +397,37 @@ public class ScaleBar extends View {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void moveToChangeView(float endX) {
+        float distance = endX - startX;
+        point.x += distance;
+        if (point.x < minx) {
+            point.x = minx;
+            shift = 0;
+        } else if (point.x > maxX) {
+            point.x = maxX;
+            shift = maxX - minx;
+        } else {
+            shift += distance;
+        }
+        initPath();
+
+        if (scales != null && scales.length > 0) {
+            int position = Math.round(shift / (float) spacing);
+            String text = scales[position];
+            if (!text.equals(selectedText)) {
+                selectedPosition = position;
+                selectedText = text;
+                if (onScaleSlideListener != null) {
+                    onScaleSlideListener.onSliding(selectedPosition, selectedText);
+                }
+            }
+        }
+        startX = endX;
+
+        postInvalidate();
+        getParent().requestDisallowInterceptTouchEvent(true);
     }
 
     private void endSlide() {
@@ -428,7 +453,7 @@ public class ScaleBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.translate(5,5);
+        canvas.translate(5, 5);
 
         //抗锯齿
         canvas.setDrawFilter(paintFlagsDrawFilter);
@@ -588,9 +613,14 @@ public class ScaleBar extends View {
             return;
         }
         this.scales = scales;
+        if (scales.length == 2) {
+            isDownToMove = true;
+            isShowScale = false;
+        }
         //默认选中第一个刻度
         selectedText = scales[0];
         selectedPosition = 0;
+        initPathAndSize();
         postInvalidate();
     }
 
@@ -659,6 +689,10 @@ public class ScaleBar extends View {
         super.setPaddingRelative(start, top, end, bottom);
         initPathAndSize();
         postInvalidate();
+    }
+
+    public void setDownToMove(boolean downToMove) {
+        isDownToMove = downToMove;
     }
 
     public interface OnScaleSlideListener {

@@ -1,130 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar1"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/colorAccent"
-        app:highText="高"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lowText="低"
-        app:slideProgress="1"
-        app:scales="@array/sizes" />
+    <data>
 
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar2"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:paddingTop="20dp"
-        android:paddingBottom="0dp"
-        app:bar_proportion="1"
-        app:highText="高"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar1"
-        app:lowText="低"
-        app:scales="@array/sizes" />
+    </data>
 
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar3"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        app:bar_proportion="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar2"
-        app:bgColor="@android:color/darker_gray"
-        app:highText="高"
-        app:hintTextSize="20sp"
-        app:isShowScale="true"
-        app:lowText="低"
-        app:selectedColor="@android:color/holo_red_dark"
-        app:slideProgress="3"
-        app:slideTextSize="13sp"
-        app:sliderColor="@android:color/holo_orange_light"
-        app:scales="@array/sizes" />
-
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar4"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        app:highText="高"
-        app:bar_proportion="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar3"
-        app:lowText="低"
-        app:scales="@array/sizes" />
-
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar5"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:paddingStart="10dp"
-        android:paddingLeft="20dp"
-        app:bar_proportion="1"
-        android:paddingTop="20dp"
-        android:paddingEnd="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="20dp"
-        app:highText="高"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar4"
-        app:lowText="低"
-        app:scales="@array/sizes" />
-
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/bar6"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:paddingTop="5dp"
-        app:bar_proportion="1"
-        android:paddingBottom="10dp"
-        app:highText="高"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar5"
-        app:lowText="低"
-        app:scales="@array/sizes" />
-
-
-    <com.guhe.scalebar.ScaleBar
-        android:id="@+id/sb_bar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
-        app:bar_proportion="1"
-        app:highText="开"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bar6"
-        app:lowText="关"
-        app:selectedColor="@android:color/holo_green_light"
-        app:scales="@array/selects" />
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar1"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent"
+            app:highText="高"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lowText="低"
+            app:slideProgress="1"
+            app:scales="@array/sizes" />
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar2"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:paddingTop="20dp"
+            android:paddingBottom="0dp"
+            app:bar_proportion="1"
+            app:highText="高"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar1"
+            app:lowText="低"
+            app:scales="@array/sizes" />
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar3"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:bar_proportion="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar2"
+            app:bgColor="@android:color/darker_gray"
+            app:highText="高"
+            app:hintTextSize="20sp"
+            app:isShowScale="true"
+            app:lowText="低"
+            app:selectedColor="@android:color/holo_red_dark"
+            app:slideProgress="3"
+            app:slideTextSize="13sp"
+            app:sliderColor="@android:color/holo_orange_light"
+            app:scales="@array/sizes" />
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar4"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:highText="高"
+            app:bar_proportion="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar3"
+            app:lowText="低"
+            app:scales="@array/sizes" />
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar5"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:paddingStart="10dp"
+            android:paddingLeft="20dp"
+            app:bar_proportion="1"
+            android:paddingTop="10dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            app:highText="高"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar4"
+            app:lowText="低"
+            app:scales="@array/sizes" />
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/bar6"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:paddingTop="5dp"
+            app:bar_proportion="1"
+            android:paddingBottom="10dp"
+            app:highText="高"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar5"
+            app:lowText="低"
+            app:scales="@array/sizes" />
+
+
+        <com.guhe.scalebar.ScaleBar
+            android:id="@+id/sb_bar"
+            android:layout_width="320dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bar6"
+            app:selectedColor="@android:color/holo_green_light" />
+
+        <Button
+            android:id="@+id/btn_change"
+            android:textColor="@android:color/white"
+            android:text="切换刻度数据"
+            android:background="@android:color/holo_orange_dark"
+            android:layout_margin="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

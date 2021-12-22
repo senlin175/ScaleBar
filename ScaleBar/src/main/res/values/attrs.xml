@@ -13,6 +13,7 @@
         <attr name="hintTextSize" format="dimension"/>
         <attr name="isShowScale" format="boolean"/>
         <attr name="slideProgress" format="integer"/>
+        <attr name="isDownToMove" format="boolean"/>
 
     </declare-styleable>
 </resources>

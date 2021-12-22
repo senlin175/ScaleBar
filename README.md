@@ -4,17 +4,18 @@
 ### 1. 属性
 | 属性名      | 使用场景                                              | 传参类型 |
 | -------------- | --------------------------------------------------------- | ---------- |
-| bgColor        | 修改未选中区域的颜色                            | 颜色资源id |
-| selectedColor  | 选中的颜色(滑块左侧的颜色)                    | 颜色资源id |
-| sliderColor    | 滑块的颜色                                           | 颜色资源id |
-| bar_proportion | 滑块半径和背景高度的比值,大于1则滑块超出滑槽滑动(默认1.2) | float      |
+| bgColor        | 修改未选中区域的颜色     默认值为灰色(#ffF5F2F3)                       | 颜色资源id |
+| selectedColor  | 选中的颜色(滑块左侧的颜色)          默认值为亮绿(#ff99cc00)           | 颜色资源id |
+| sliderColor    | 滑块的颜色              默认值为白色                          | 颜色资源id |
+| bar_proportion | 滑块半径和背景高度的比值,大于1则滑块超出滑槽滑动(默认1.0) | float      |
 | lowText        | 左侧滑槽中的展示文字                            | String     |
 | highText       | 右侧展示文字,不设置则不展示                  | String     |
-| scales         | 刻度数组|String数组类型的资源Id(不会用的见下方图片) | String[]   |
+| scales         | 刻度数组|String数组类型的资源Id(不会用的见下方图片)  默认值是{"OFF","ON"}  | String[]   |
 | slideTextSize  | 滑块上的文字大小,不设置会自动计算(取值氛围12px~112px) | Int        |
 | hintTextSize   | 滑槽中的文字大小,不设置会自动计算         | Int        |
-| isShowScale    | 滑块上是否展示选中的刻度文字                | Boolean    |
+| isShowScale    | 滑块上是否展示选中的刻度文字   刻度数组长度为2是默认为false  其他情况默认true               | Boolean    |
 | slideProgress  | 选中刻度                                   | Int        |
+| isDownToMove   | 触摸事件中的 DOWM事件  是否将滑块移动到触摸点   刻度数组长度为2是默认为true  其他情况默认false                                   | Boolean        |
 ### 2. 使用示例
 ```
         <com.guhe.scalebar.ScaleBar
